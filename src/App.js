@@ -3,12 +3,14 @@ import './global.css';
 import './App.css';
 import './Sidebar.css';
 import './Main.css';
+import api from './services/api';
 
 function App() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
   const [github_username, setGithubUsername] = useState('');
-  const [stacks, SetStacks] = useState('');
+  const [stacks, setStacks] = useState('');
+  const [devs, setDevs] = useState([]);
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -24,10 +26,25 @@ function App() {
         timeout: 30000
       }
     );
+    getDevs();
   }, []);
+
+  const getDevs = async () => {
+    const response = await api.get('/devs');
+    setDevs(response.data);
+  };
 
   const addDev = async e => {
     e.preventDefault();
+    const response = await api.post('/devs', {
+      github_username,
+      stacks,
+      latitude,
+      longitude
+    });
+    setGithubUsername('');
+    setStacks('');
+    getDevs();
   };
 
   return (
@@ -55,7 +72,7 @@ function App() {
               required
               value={stacks}
               onChange={e => {
-                SetStacks(e.target.value);
+                setStacks(e.target.value);
               }}
             />
           </div>
@@ -88,70 +105,21 @@ function App() {
       </aside>
       <main>
         <ul>
-          <li className='dev-item'>
-            <header>
-              <img
-                src='https://avatars2.githubusercontent.com/u/19656546?s=400&u=86d34f06878b088e8cce446f103a41feb092ffc8&v=4'
-                alt='adailsonaguiar'
-              />
-              <div className='user-info'>
-                <strong>Adailson adailsonaguiar</strong>
-                <span>Angular, ReactJS, ReactNative</span>
-              </div>
-            </header>
-            <p>Minha Bio I study information systems.</p>
-            <a href='https://github.com/adailsonaguiar'>
-              Acessar perfil no Github
-            </a>
-          </li>
-          <li className='dev-item'>
-            <header>
-              <img
-                src='https://avatars2.githubusercontent.com/u/19656546?s=400&u=86d34f06878b088e8cce446f103a41feb092ffc8&v=4'
-                alt='adailsonaguiar'
-              />
-              <div className='user-info'>
-                <strong>Adailson adailsonaguiar</strong>
-                <span>Angular, ReactJS, ReactNative</span>
-              </div>
-            </header>
-            <p>Minha Bio I study information systems.</p>
-            <a href='https://github.com/adailsonaguiar'>
-              Acessar perfil no Github
-            </a>
-          </li>
-          <li className='dev-item'>
-            <header>
-              <img
-                src='https://avatars2.githubusercontent.com/u/19656546?s=400&u=86d34f06878b088e8cce446f103a41feb092ffc8&v=4'
-                alt='adailsonaguiar'
-              />
-              <div className='user-info'>
-                <strong>Adailson adailsonaguiar</strong>
-                <span>Angular, ReactJS, ReactNative</span>
-              </div>
-            </header>
-            <p>Minha Bio I study information systems.</p>
-            <a href='https://github.com/adailsonaguiar'>
-              Acessar perfil no Github
-            </a>
-          </li>
-          <li className='dev-item'>
-            <header>
-              <img
-                src='https://avatars2.githubusercontent.com/u/19656546?s=400&u=86d34f06878b088e8cce446f103a41feb092ffc8&v=4'
-                alt='adailsonaguiar'
-              />
-              <div className='user-info'>
-                <strong>Adailson adailsonaguiar</strong>
-                <span>Angular, ReactJS, ReactNative</span>
-              </div>
-            </header>
-            <p>Minha Bio I study information systems.</p>
-            <a href='https://github.com/adailsonaguiar'>
-              Acessar perfil no Github
-            </a>
-          </li>
+          {devs.map(dev => (
+            <li className='dev-item' key={dev._id}>
+              <header>
+                <img src={dev.avatar_url} alt={dev.github_username} />
+                <div className='user-info'>
+                  <strong>{dev.name}</strong>
+                  <span>{dev.stacks.join(', ')}</span>
+                </div>
+              </header>
+              <p>{dev.bio}</p>
+              <a href={`https://github.com/${dev.github_username}`}>
+                Acessar perfil no Github
+              </a>
+            </li>
+          ))}
         </ul>
       </main>
     </div>
