@@ -7,6 +7,8 @@ import './Main.css';
 function App() {
   const [latitude, setLatitude] = useState('');
   const [longitude, setLongitude] = useState('');
+  const [github_username, setGithubUsername] = useState('');
+  const [stacks, SetStacks] = useState('');
 
   useEffect(() => {
     navigator.geolocation.getCurrentPosition(
@@ -22,23 +24,40 @@ function App() {
         timeout: 30000
       }
     );
-    /*   setTimeout(() => {
-      setLatitude(3333);
-    }, 3000); */
   }, []);
+
+  const addDev = async e => {
+    e.preventDefault();
+  };
 
   return (
     <div id='app'>
       <aside>
         <strong>Cadastrar</strong>
-        <form>
+        <form onSubmit={addDev}>
           <div className='input-block'>
             <label htmlFor='github_username'>Usuário do Github</label>
-            <input name='github_username' id='github-username' required />
+            <input
+              name='github_username'
+              id='github-username'
+              required
+              value={github_username}
+              onChange={e => {
+                setGithubUsername(e.target.value);
+              }}
+            />
           </div>
           <div className='input-block'>
             <label htmlFor='stacks'>Digite as stacks</label>
-            <input name='stacks' id='stacks' required />
+            <input
+              name='stacks'
+              id='stacks'
+              required
+              value={stacks}
+              onChange={e => {
+                SetStacks(e.target.value);
+              }}
+            />
           </div>
           <div className='input-group'>
             <div className='input-block'>
