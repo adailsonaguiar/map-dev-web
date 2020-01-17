@@ -2,7 +2,7 @@
 
 ![alt text][github]
 
-[github]: https://raw.githubusercontent.com/adailsonaguiar/map-dev-web/master/screens/Screenshot_20200117_114814.png 'Github logo'
+[github]: https://raw.githubusercontent.com/adailsonaguiar/map-dev-web/master/screens/Screenshot_20200117_114814.png 'Screenshot'
 
 ### Clonando a aplicação
 
