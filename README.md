@@ -4,7 +4,9 @@
 
 Clone a aplicação através do comando:
 
-> git clone https://github.com/adailsonaguiar/map-dev-web.git
+```javascript
+ git clone https://github.com/adailsonaguiar/map-dev-web.git
+```
 
 ### Backend e Documentação
 
